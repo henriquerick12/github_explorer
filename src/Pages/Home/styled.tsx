@@ -1,9 +1,9 @@
-import styled, {css} from "styled-components";
+import styled, { css } from "styled-components";
 import { shade } from "polished";
 
 type FormProps = {
   hasError: boolean;
-}
+};
 
 export const Container = styled.div`
   h1 {
@@ -19,7 +19,7 @@ export const Form = styled.form<FormProps>`
   margin-top: 40px;
   max-width: 700px;
   display: flex;
-  
+
   input {
     background-color: #fff;
     flex: 1;
@@ -29,9 +29,11 @@ export const Form = styled.form<FormProps>`
     border-radius: 5px 0 0 5px;
     font-size: 1.2rem;
 
-    ${props => props.hasError && css`
-      border-color: #c53030;
-    `}
+    ${(props) =>
+      props.hasError &&
+      css`
+        border-color: #c53030;
+      `}
 
     &::placeholder {
       font-size: 1.2rem;

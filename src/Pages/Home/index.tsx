@@ -3,7 +3,6 @@ import { Container, Form, Repositories, Error } from "./styled";
 import { Link } from "react-router-dom";
 
 import api from "../../services/api";
-
 import { FiChevronRight } from "react-icons/fi";
 import Logo from "../../assets/logo.svg";
 
@@ -17,9 +16,16 @@ type repoType = {
 };
 
 const Home: React.FC = () => {
-  const [repo, setRepo] = useState<repoType[]>([]);
   const [newrepo, setNewRepo] = useState("");
   const [inputError, setInputError] = useState("");
+  const [repo, setRepo] = useState<repoType[]>(() => {
+    const reposGet = localStorage.getItem("@GitHubExplorer:repo");
+
+    if (reposGet) {
+      return JSON.parse(reposGet);
+    }
+    return [];
+  });
 
   async function handleAddRepo(e: FormEvent<HTMLFormElement>): Promise<void> {
     e.preventDefault();
@@ -28,16 +34,20 @@ const Home: React.FC = () => {
 
     try {
       const response = await api.get(`repos/${newrepo}`);
+      setIsLoad(true);
       setRepo([...repo, response.data]);
       setNewRepo("");
-      setInputError("")
+      setInputError("");
+      setIsLoad(false);
     } catch (error) {
       setNewRepo("");
       setInputError("Erro na busca do repositorio");
     }
   }
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    localStorage.setItem("@GitHubExplorer:repo", JSON.stringify(repo));
+  }, [repo]);
 
   return (
     <Container>
