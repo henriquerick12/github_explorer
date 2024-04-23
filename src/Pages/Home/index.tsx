@@ -1,5 +1,5 @@
 import { FormEvent, useEffect, useState } from "react";
-import { Container, Form, Repositories } from "./styled";
+import { Container, Form, Repositories, Error } from "./styled";
 import { Link } from "react-router-dom";
 
 import api from "../../services/api";
@@ -19,13 +19,22 @@ type repoType = {
 const Home: React.FC = () => {
   const [repo, setRepo] = useState<repoType[]>([]);
   const [newrepo, setNewRepo] = useState("");
+  const [inputError, setInputError] = useState("");
 
   async function handleAddRepo(e: FormEvent<HTMLFormElement>): Promise<void> {
     e.preventDefault();
 
-    const response = await api.get(`repos/${newrepo}`);
-    setRepo([...repo, response.data]);
-    setNewRepo('')
+    if (!newrepo) return setInputError("Digite o nome do repositorio");
+
+    try {
+      const response = await api.get(`repos/${newrepo}`);
+      setRepo([...repo, response.data]);
+      setNewRepo("");
+      setInputError("")
+    } catch (error) {
+      setNewRepo("");
+      setInputError("Erro na busca do repositorio");
+    }
   }
 
   useEffect(() => {}, []);
@@ -35,15 +44,17 @@ const Home: React.FC = () => {
       <img src={Logo} alt="Logo" />
       <h1>Explore repositorios no Gitbub</h1>
 
-      <Form onSubmit={handleAddRepo}>
+      <Form hasError={!!inputError} onSubmit={handleAddRepo}>
         <input
           value={newrepo}
           onChange={(e) => setNewRepo(e.target.value)}
           type="text"
-          placeholder="Digite o nome/repositorio ..."
+          placeholder="Digite o autor/repositorio ..."
         />
         <button>Pesquisar</button>
       </Form>
+
+      {inputError && <Error>{inputError}</Error>}
 
       <Repositories>
         {repo &&
