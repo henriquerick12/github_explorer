@@ -1,14 +1,16 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-import Home from "../Pages/Home";
-import Repository from "../Pages/Repository";
+import Home from "../Pages/Home/index";
+import Repository from "../Pages/Repository/index";
 
-const Router: React.FC = () => {
+const Router = () => {
   return (
     <BrowserRouter>
-      <Route>
-        <Routes />
-      </Route>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/repository" element={<Repository />} />
+        <Route path="*" element={<Home />} />
+      </Routes>
     </BrowserRouter>
   );
 };
