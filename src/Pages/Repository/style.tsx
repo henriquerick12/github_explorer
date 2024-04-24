@@ -77,7 +77,7 @@ export const Info = styled.div`
 `;
 
 export const Issues = styled.div`
-  margin-top: 60px;
+  margin-top: 30px;
   display: flex;
   background: #fff;
   width: 100%;
