@@ -34,11 +34,9 @@ const Home: React.FC = () => {
 
     try {
       const response = await api.get(`repos/${newrepo}`);
-      setIsLoad(true);
       setRepo([...repo, response.data]);
       setNewRepo("");
       setInputError("");
-      setIsLoad(false);
     } catch (error) {
       setNewRepo("");
       setInputError("Erro na busca do repositorio");
@@ -69,7 +67,10 @@ const Home: React.FC = () => {
       <Repositories>
         {repo &&
           repo.map((item) => (
-            <Link key={item.full_name} to={"/repository"}>
+            <Link
+              key={item.full_name}
+              to={`/repository/${encodeURIComponent(item.full_name)}`}
+            >
               <img src={item.owner.avatar_url} alt={item.owner.login} />
               <div>
                 <strong>{item.full_name}</strong>
